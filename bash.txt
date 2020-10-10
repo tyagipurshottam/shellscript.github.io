@@ -1,0 +1,803 @@
+#/usr/bin/bash
+#stdin,stderr 
+#ls 1> /tmp/1.txt # storage only success output
+#ls 2> /tmp/2.txt #storage only error output
+#java -version 1>/tmp/java_sucess.txt 2>/tmp/java_error.txt # both error and sucess
+#java -version 1>/tmp/java_sucess_or_fail.txt 2>&1 #sucess and error both in 1 file
+#java -version &> /tmp/java_sucess_or_fail.txt #sucess and error both in 1 file
+
+#echo
+#echo "$(ls)" # echo run any command
+#echo $HOSTNAME # echo display varibale vaule
+#echo # it only display empyt line
+#echo -n "This is line"
+#echo "this is next line" # due to echo -n both come in single line means curse doesnot move like "This is line this is next line"
+#echo -e "one\btwo" #ontwo
+#echo -e "HELLO\rhi" #hiLLO
+#echo -e "HELLO\rhikkkk" #hikkkk
+#echo -e "HELLO\chikkkk"#HELLO
+#echo -e "HELLO\thikkkk" #HELLO   hikkkk#
+#echo -e "HELLO\vhikkkk" #HELLO
+                        #      hikkkk
+#echo -e "HELLO\\\vhikkkk" #HELLO\vhikkkk # to escape special charter ues \\ slash
+#echo -eE "HELLO\\\vhikkkk" #simple echo ccommand
+#echo for color
+##echo -e "\033[0;32m Purshottam" # echo result in green color
+##echo -e "\033[0;32m\033[0m" # return back to shell command color to white
+#echo -e "\033[0;32m Purshottam\033[0m" # only echo out put to green color and terminal back to normal
+#echo -e "\033[0;32m Purshottam\033[0m"# for underline
+# echo -e "\033[1;32m Purshottam\033[0m" # for bold,thick color
+
+#varibale
+#x=2 # only this is vaild x =2, x= 2, x = 2 all these are not vaild
+#echo $x or echo "$x" or echo "{$x}" best practice is  echo "$x"
+#n=shell
+#n="shell script" # if you script have spcae use "" 
+#d=`date`;echo "$d"
+#default variable vaule is empty
+#x=56
+#echo "x=$x"
+#x="\033[0;32mPurshottam\033[0m"
+#echo  -e "x=$x"
+
+#status
+#echo $?  0 means before this command run sueccssfull if not 0 means error in command(falied) 
+#1 is command failed during exection but command is vaild and 127 command not found, 2 is command useage is invalid
+
+#grep command
+
+#basic option -i -w -v -o -n -c -A -B -C -r -l -h
+#grep -i #ingnore case censtive
+#grep -w "name" test.sh| grep excat word match
+#grep -v "name" test,sh| print line which does not have name
+#grep -o "name" test.sh  | exact math and only print name
+#grep -n "name" test.sh | give only line number
+#grep -c "name" test.sh | give count like 3 
+#grep -A 1 "Enter" test.sh | give out next line when found Enter
+#grep -B 1 "Enter" test.sh | give previus line when found enter
+#grep -l "Enter" * | display only file name
+
+#grep -f  test1 test.sh| in test1 there is Enter word
+#grep -e "Enter" -e "name" test.sh| search multipe string in 1 file
+#grep -E "Enter|name" test.sh| grep use  widlely
+#grep -E "^name" test.sh| seach only   staring with name line
+#grep -E "name$" test.sh | seach only name fist and like name1233456
+#grep -E "^$" test.sh| match empty line
+#grep -E "\^" test.sh  | to remove specail purpose
+#grep -E "n..e" test.sh| search name or nay charter b/w n . . e
+#grep -E "\bname" test.sh| serach name whcih have in begning space
+#grep -E "\bname\b" test.sh| serach name whcih have in begning space and ending
+#grep -Ew "name" test.sh | search only word
+#grep -Ew "n?" test.sh | match only one time
+#grep -Ew "n*" test.sh | match all time
+#grep -E "[xyz]" test.sh | it search having x or y or z
+#grep -E "[a-d]" test.sh | search b/w a b c d 
+#grep -E "[^name]" test.sh | search other then name
+#grep -E "[[:digit:]]" test.sh | search only digit
+#grep -E "[[:upper:]]" test.s | search upper case
+#grep -E "[[:lower:]]" test.s | seach lower case 
+#[[:blank:]] [[:upper:]]
+#ls -ltrh | grep -E "^d"| seach oonly dir in 
+
+#search only ip4 address not 123455.2.3.4233456
+# cat /etc/hosts | grep -E "\b[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\b"
+
+#cut commnd
+
+#cut -c  1 test.sh | cut only 1 charter in each line
+#cut -c 4- test.sh | cut 4 and show to last charter
+#cut -d ':' -f 1-3 /etc/passwd
+# cut -d ':' -f 1,4 /etc/passwd --output-delimiter=" "
+#cut -d ' ' -f -sd test.sh| only show seprate word which have space nnot aother word which have tab
+#httpd -v | grep -E "version"| cut -d '/' -f 2| cut -d ' ' -f 1
+
+#awk line is called record
+#httpd -v | awk -F '[ / ]' 'NR==1' {print $3}
+#awk '{print NR,$0,NF}' demo.txt
+
+#string
+#echo $(#x) | give lenght of x
+#name="sheLl" 
+#echo "${name}"
+#echo "${name^^}" #upper case
+#echo "${name,,}" #lowe case
+#echo "${#name}" #give lenght off string
+#path1="/etc"
+#path2="hosts"
+#join_path=${path1}/${path2}
+#echo $join_path
+
+#dirname /etc/selinux/final/ | delete last path in file like /etc/selinux 
+#basename /etc/selinux/config | only show last file name like config
+
+#my_name="shell scripting"
+#echo "${my_name}"
+#echo "${my_name:0}"
+#echo "${my_name:1}"
+#echo "${my_name:2,5}"
+#echo "${my_name:0:5}"
+
+<< my1
+read -p "Enter a name: " my_name
+my_name_up=${my_name^^}
+my_name_lo=${my_name,,}
+echo "You upper case is  $my_name_up"
+echo "You lower case is $my_name_lo"
+my1
+
+<< my2
+read -p "Entera oyur name: "
+echo "$REPLY" # reply id default variable in read $REPLY
+my2
+
+<< my3
+echo "$0" 
+echo "$1"
+echo "$2"
+echo "$10" # in this it take 1 and 0 varibale
+echo "${10}" #thi is correct to take 10
+echo "The number of command line  arguments are: $#"
+echo "The all command line arguments are: $@"
+echo "The all command line argumnets are $*"
+my3
+
+<<my4
+x=7 #oonly for interger
+y=6
+((sum=x+y))
+echo "${sum}"
+my4
+
+<< my5
+x=7
+y=6
+sum=$(bc<<<"$x +$y")
+echo $sum
+my5
+
+
+<< my6
+#read -p "Enter num-1: "  a
+#read -p "Enter num-2: "  b
+#echo "========================="
+#echo "Enter 1. Addition"
+##echo "     2. Sub"
+#echo "      3. Mul"
+#echo "      4. Div"
+#echo "========================="
+#read -p "Enter your option(1-4): " opt
+
+#case  $opt in
+#	1)
+#		echo "The addition of $a and $b is: $((a+b))"
+#	        ;;
+#	2)
+#		echo "The sub of $a and $b is: $((a-b))"	
+#		;;
+#	3)
+#		echo "The mul of $a and $b is: $((a*b))"
+#		;;
+#	4)	echo "The div of $a with $b is: $((a/b))"
+#		;;
+#	*)
+#		echo "Your entered invalid option"
+#		;;
+#
+#esac
+my6
+
+#test command to check  condition or use [[ ]] in commmand line both are same
+#test  1 -eq 2
+#echo $? it show 1 output means they are not equal
+#test 1 -eq 1
+#echo $? it show 0 output means they are equal 
+
+#x=3
+#y=6
+#[[ $x -eq $y ]]
+#echo $? #get 1
+#[[ !$x -eq $y  ]]
+#echo $? #get 0
+
+
+#x="ram"
+#[[ -z $x]] 
+#echo $? # if it show 1 then your string contains some vaule or if contain 0 means you have empty string
+
+#file test operaters
+#[[ -d 100-days-python-exce ] if it show 0 means it is directory if not then it show 1 this is not directory
+#[[ -e test.sh ]] if it show 0 means it is file
+
+
+#&& command
+#pwd && date # both run and give out put if 1 command not run then it does not give both 
+#dsd && date # it  does not give poutput in && 
+
+#if which docker
+#then
+#    echo "Httpd is there"
+#fi
+
+
+<< my7
+user_id=$(id -u)
+
+if [[ $user_id -ne 0 ]]
+then
+   echo "you are not the root user to run this shell script"
+fi
+
+
+if [[ $# -ne 1 ]]
+then
+   echo "Please run this shell script as follows:"
+   echo "Usage: "
+   echo "$0  start|stop|restart|status"
+   exit
+fi
+
+#read -p "Enter your action for httpd: " usr_action
+usr_action=$1
+
+case $usr_action in
+
+    start)  
+         echo "Starting httpd....."
+         systemctl status httpd &> /dev/null || systemctl start httpd ;;
+    stop)
+         echo "stoping httpd...."
+         systemctl status httpd &> /dev/null && systemctl stop httpd ;;
+    restart) 
+         echo "restarting httpd ......."
+         systemctl restart httpd ;;
+    status)
+         echo "finding the status......."
+         systemctl status httpd ;;
+    *)
+         echo "your action is invalid"
+         echo "valid actions are start|stop|restart|status"       
+esac  
+my7
+
+<< my8
+SRC="/var/www/html"
+DEST="/backups"
+EDTB=$(date '+%b_%d_%Y_%H_%M_%S')
+[[ -e $DEST ]] || mkdir $DEST
+tar -cvzpf $DEST/my_website.com_bkup_${EDTB}.tar.gz $SRC
+my8
+
+# $* and $# have minior differance
+<< my9 
+!/bin/bash
+
+echo "The below output is for \$*"
+for each in "$*" # here it take 1 agrument whether it is a b 1 2 3 
+# for each in $* # here it take 5 agrument wheter it is a b 1 2 3 
+do
+  echo $each
+done
+
+echo "The below output is for \$@"
+for each in "$@" # here it take 5 agrument in a b 1 2 3  
+do
+  echo $each
+done
+my9
+
+# loop
+
+<< my10
+========================================
+intro_loops.sh
+
+#!/bin/bash
+
+for each in 1 2 3 4 5
+do
+  echo "Welcome to shell scripting"
+  echo "We done with very basics"
+  echo "Now we are starting loops concepts"
+done
+
+
+===========================================
+check_ex_per.sh
+
+#!/bin/bash
+
+<< com
+if [[ -x httpd_info.sh ]]
+then
+  echo "httpd_info.sh is having execution permission" 
+else
+  echo "httpd_info.sh is not having execution permission"
+fi
+
+
+if [[ -x httpd_ver_port.sh ]]
+then
+   echo "httpd_ver_port.sh is having execution permission" 
+else
+   echo "httpd_ver_port.sh is not having execution permission"
+fi
+
+com
+
+#for each in httpd_info.sh httpd_ver_port.sh check_ex_per.sh
+for each in $(ls)
+do
+  if [[ -x $each ]]
+  then
+    echo "$each is having execution permission" 
+  else
+    echo "$each is not having execution permission"
+  fi
+done
+======================================================================
+check_ex_per_of_files_for_given_dir.sh
+
+#!/bin/bash
+
+if [[ $# -ne 1 ]]
+then
+	echo "Usage: $0 <any_path>"
+	exit 
+fi
+
+
+given_path=$1
+for each in $(ls $given_path)
+do
+  if [[ -x $each ]]
+  then
+      echo "$each is having execution permission" 
+  else
+      echo "$each is not having execution permission"
+  fi
+done
+========================================================
+my10
+
+
+#loop
+<< my11
+basic_for_loop.sh
+-----------------
+#!/bin/bash
+#for each_value in 1 2 3
+for each_file in $(ls)
+do
+   echo "this is a loop"
+   echo "for this iteration each_value is: $each_file"
+done
+=======================================================
+c_type_for_loop.sh
+------------------
+#!/bin/bash
+clear
+echo "we are working with loops"
+for((cnt=1;cnt<=20;cnt++))
+do
+  echo "$cnt"
+done
+
+echo "we complete for loop"
+==================================================
+infi_for_loop.sh
+----------------
+#!/bin/bash
+echo "This is a for loop"
+cnt=1
+for((;;))
+do
+  echo "this is infi loop"
+  ((cnt++))
+  sleep 1
+  if [[ $cnt -eq 10 ]]
+  then
+	  break
+  fi
+done
+
+
+echo "out of loop"
+my11
+
+
+<< my12
+if [[ $# -eq 0 ]]
+then
+  echo "Usage: $0 pkg1 pkg2 ...."
+  exit 1
+fi
+
+
+if [[ $(id -u) -ne 0 ]]
+then
+  echo "Please run from root user or with sudo privilage"
+  exit 2
+fi
+
+
+for each_pkg in $@
+do
+  if which $each_pkg &> /dev/null
+  then
+     echo "Already $each_pkg is installed"
+  else
+     echo "Installing $each_pkg ......"
+     yum install $each_pkg -y &> /dev/null 
+     if [[ $? -eq 0 ]]
+     then
+       echo "Successfully installed $each_pkg pkg"
+     else
+       echo "Unable to install vim $each_pkg"
+     fi
+  fi
+
+done
+my12
+
+<< my13
+display_numbers.sh
+-----------------
+#!/bin/bash
+echo "starting for loop"
+<< mycom
+for each in $(seq 1 10)
+do
+  if [[ $each -gt 5 ]]
+  then
+	 break
+  fi 
+  echo "$each"
+done
+mycom
+
+<< com
+for each in $(seq 1 10)
+do
+  if [[ $each -ne 5 ]]
+  then
+     echo "$each"
+  fi
+
+done
+
+com
+
+for each in $(seq 1 10)
+do
+   if [[ $each -eq 5 ]]
+   then
+	   continue
+   fi	 
+
+   echo "$each"
+done
+
+echo "for loop is over"
+=============================
+my13
+
+<< my14
+#for read line by line use while loop
+file_name="bash.sh"
+while read each_line
+do
+  echo "${each_line}"
+done < $file_name
+ 
+#while loop for get command output linne by line
+cat bash.sh| while read each_line
+command | while read each_line
+do
+   echo"${each_line}"
+done
+my14
+
+$very impoertant import svc format and use it variable
+<< my15
+while IFS="," read f1 f2
+do
+  echo "${f1} ---  ${f2}"
+  echo "-----------"
+done < TenantandImage.csv
+
+OLD_IFS=$IFS
+cat TenantandImage.csv | awk 'NR!=1 {print}' |  while IFS="," read $f1 $f2
+do
+    echo "${f1} --- ${f2}"
+    echo "-------"
+done
+IFS=$OLD_IFS
+my15
+
+#local variable
+<< my16
+display()
+{
+  y=55
+  echo "The variable value of x is: $x"
+  local x=67
+  local p=78
+}
+
+x=5
+display
+
+echo "The value of a variable y is: $y"
+echo "The x value after calling display function: $x"
+echo "The value of p is: $p"
+my16
+ 
+ #return
+ << my17
+ return_variable()
+{
+  local x="shell"
+  return $x
+}
+
+
+return_variable
+y=$?
+echo "The value of y is: $y"
+my17
+
+
+<< my18
+# addition()
+# {
+#   #echo "The \$0 value is: $0"
+#   m=$1
+#   n=$2
+#   result=$((m+n))
+#   echo "The addition of $m and $n is: $result"
+
+# }
+
+
+x=6
+y=2
+addition $x $y
+
+p=3
+q=7
+addition $p $q
+
+addition 4 9
+my18
+
+#echo and printf basic diffrance is echo by default use "\n"end of line but printf not
+#tput cols # show number of coloum in you shell
+#tput lines # show  number of lines in you shell
+#printf "%151s" " " | tr " " "*" | output shown below
+#*******************************************************************************************************************************************************
+#print at center 
+#title="Welcome Purshottam"
+#COLOUMNS=${tput cols}
+#COLOUMNS=`tput cols`
+#title_size=${#title}
+#span=$((($COLOUMNS + $title_size)/2))
+#printf "%${COLOUMNS}s"  " " | tr " " "*"
+#printf "%${span}s\n" "$title"
+#printf "%${COLOUMNS}s" " " | tr " " "*"
+
+
+#Array
+#x=(1 2 3 "shell" 5)
+#echo ${x[1]}
+#echo ${x[@]} or echo ${x[*]} find all value of error
+#get range of array
+#echo ${x[@]:2} # indx 2 to last
+#echo ${x[@]:1:2} index 1 to 2 only
+#get the lengt og array
+#echo ${#x[@]} 
+# add a array
+#y="(${x[@]} "centos")"
+#echo "${y[@]}"
+# unset command to remove a vaule in varibale like
+#unset y
+#remove partically vaule in array
+#unset x[2]
+#echo "${x[@]}"
+
+#base on index we also assign some vaule
+#z[0]=45
+#z[1]="shell"
+#echo "${z[@]}"
+#z[5]="ram" # we doenot get 2 3 4 index vaule but we gwet 5 value
+
+#my_array=(1 2 3 "ram" "sham")
+
+#for each in ${my_array[@]}
+#do
+#  echo "${each}" 
+#done
+
+# put coomand in array
+#today_date=($(date))
+#echo "${today_date[1]}"
+#if you want to add command in array then use today_date=($(date)) or if you want to use entire commnad as single varible then use today_date=$(date)
+
+
+#####AWK
+#awk '' /etc/passwd # nothing happen #
+#awk '' /etc/passwd
+#awk '{print $1,$4,$3 "usinf AWK cmmand"}' demo.txt
+#NR give line number
+#awk '{print NR,$1,$4,$3 "usinf AWK cmmand"}' demo.txt
+#NF is number of filed
+#awk '{print NR,NF}' demo.txt
+#print first filed
+#awk -F : '{ print $1 }' /etc/passwd
+
+#awk 'BEGIN {print "hello WORLD"}'
+#awk -f awk_script.awk filename
+#awk_script.awk file below:-
+##{ #awk-script wriiten to run a file directory
+##!/usr/bin/awk -f
+#BEGIN {print "hello"}
+#}
+#awk 'BEGIN { a=5; print a  }'
+
+#given varibale as file ot command line
+#echo "2 6 "| awk '{print "a=" $1, "b=" $2}'
+#echo "2 6" > abc.txt
+#awk '{print "a=" $1, "b=" $2}' abc.txt
+#awk '{ a=$1;b=$2 print "a="a,"b="b }' abc.txt
+
+#awk complte script
+##!/usr/bin/awk -f
+#BEGIN {
+#    print "hello"
+#}
+##{
+#    a=$1
+#    b=$2
+#   print "a="a,"b="b
+#}
+#end{
+#    print "Completed reading a and b vaules"
+##}
+
+#arthmetic easly perform
+<< my19
+#!/bin/bash
+read -p "Enter a value: " a
+read -p "Enter a vaule: " b
+echo "$a $b"| awk '{ a=$1,b=$2;print "a="a,"b"=b}'
+#it very easy in arthmetic thing 
+echo "$a $b"| awk '{ a=$1,b=$2;print "sum=" a*b}'
+awk -v a=$1 -v b=$2 'BEGIN { print "sum=" a+b}'
+my19
+#awk  '/\"'$1'............\"/{print NR}' $2 | coomand line agrument pass
+#awk -v x=$a -v=$b '{print  x+y }' /randomfile # it print add very easy and -v is ue to add a varible in awk
+#awk -v x=$a -v=$b 'BEGIN {print  x+y }' #begin does not need input so it perfrom same vaule
+
+
+#SED command
+#sed '' test.sh| print all line in file
+#sed -n '3p' test.sh | print only 3 line
+#sed -n '$p' test.sh | print last line
+#sed -n '3,12p' test.sh | print  3 line to 12 line
+#sed -n '3,$p' test.sh | print 3 line to last number
+#sed -n '12,+7p' test.sh| print 12 to add 7 line means upto 19 lines
+#sed -n '1~2p' test.sh  | print alternative like 1 3 5 7 lines
+
+#remove last time
+#sed  '$d' test.sh | delete last line in file but does save in main file jut output in shell
+#sed  '3,7p' test.sh | delete only these durtaion 3 to7 line reaming is there 
+#if you want to delete permanent the use -i iption in sed
+#sed  -i '3,7p' test.sh| it permamnet remove 3 to 7line in test.sh file
+#if you wamt to take backup before change in sed then use -i.back
+#sed -i.back '3,7p' test.sh | what evere you want to save in file name last use in i.org then you file id test.sh.org
+
+#sed a search
+#sed -n "/echo/p" test.sh | search echo in all line
+#sed -n "/echo/p" -e "/bin/p" test.sh | use -e option to search more than one
+#delete a line which does have echo word
+#sed "/echo/!d" test.sh | delete which does not have echo
+#sed "/echo/d" test.sh | delete only which have echo
+#sed -n '/^#/p' test.sh | means only search # in file
+#sed -n '/^#/!p' test.sh | means search line without #
+
+#sed find and replace
+#sed 's/root/tyagi' /etc/passwd | only change 1 place when found
+#sed 's/root/tyagi/g' /etc/passwd | know it change every where
+#chnage only second word occur
+#sed "s/daemon/systemctl/2" /etc/passwd | if deamon is there after 2 coour word then it also do action menas it replcae to syste,d
+#sed "/tygai/s/bash/ksh/" /etc/password | in this it search tyagi then change bash to ksh
+#sed "/tygai/s/bash/ksh/g" /etc/password | search tyagi then change to bash to ksh every time 
+
+#insert to new line or delete a line
+#insert header
+#sed "1i ADD a new line" test.sh# add a fiest line if you give 1i then add in second line and if you give $i then add in last line
+#After line nyber 1
+#sed "1a -----------" test.sh
+#sed "$a ---------------" test.sh |last line add
+#add a line
+#sed -i '/name/i 0 raju raju' test.sh# add a line afer name "0 raju raju"
+#sed -i '/name/a 0 raju raju' test.sh# insert data after name
+#delete a line
+#sed -i '3d' test.sh | delete 3 line
+#sed -i '$d' test.sh | delete last line
+#sed -i '/name/d ' test.sh | delete a line which contain name
+
+#sed with regex
+#sed -n '/p[ou]t/p' test.sh | search pattern
+#sed -n '/\s/p' test.sh|  only  search space (/s is subset of /t) means it also take tab
+#sed -n '/\\s/p' test.sh search special charter \s in file if it contain
+#sed -n '/t/p' test.sh print a line whcih have tab space(/t is not subse of /s)
+#sed -n '/ra.ju/p' test.sh print a chartaer which have raxju ya raaju like . means anything b/w these two word
+#sed -n '/\sra.ju/p' test.sh| seach w aord staring for space
+#sed -n '/\./p' test.sh | match only .
+#sed -n '/raju*/p' test.sh | means in raju u may be present or not but it search raj in all file
+#sed -n '/raju\+/p' test.sh  | means raju rajuu rajuuuu like this seach only with may time
+#sed -n '/raju\?/p' test.sh | means in raju u present in 0 time or only 1 time
+#sed -n '/raju\?\s/p' test.sh | means after you get space when raju search
+#sed -n '/^raju/p' test.sh | means raju at staring line
+#sed -n '/raju$/p' test.sh | means raju at end line
+#sed -n '/^$/p' test.sh | means find empty line in given file
+#sed -i '/^$/d' test.sh | means delete empty line in given file
+#sed -n '/\^$/p' test.sh | search only which start $
+#sed  -n '/r[a-d]ju/p' test.sh | search after r  a to d  
+#sed -n '/This\{3\}/p' test.sh| means seach having this s 3 times means thissss,thisssss
+#sed -n '/This\{3\}\b/p' test.sh| means seach having only s 3 times means thissss,\b menas space
+#sed -n '/This\{3,4\}\b/p' test.sh| means seach having only s 3  and 4 qtimes means thissss,\b menas space
+
+<< my20
+#!/usr/bin/bash
+clear
+while : # while for infinty loop
+do
+    echo -e "\033[92m $(date'+%T')" # green colour
+    sleep 1
+    clear
+done
+my20
+
+
+<< m1
+#Write a shell script to append the content of one file to another file.
+#If any word is common in both the files that need not to be appended
+#!/bin/bash
+src=$1
+dest=$2
+#for read line by line use while loop
+while read line
+do
+  for word in $line
+  do
+     if ! grep -q "\b$word" $dest
+     then
+        echo -n "$word" >> $dest
+     fi
+  done
+  echo   "" >> $dest
+done < $src
+m1
+
+<< m2
+#write a shell script that will take an input file and remove identical lines (or duplicate lines from the file)
+#!/bin/bash
+clear
+sort $1 | uniq  | while read line
+do
+    echo "${line}"
+done
+m2
+<< m3
+#Write a shell script that takes a name of a folder, and delete all sub folders of size 0
+#!/bin/bash
+ls $1| while read folder
+do
+     files=`ls $folder | wc -l`
+     if [[ $files -eq  0 ]]
+     then
+         rmdir $floder
+     fi
+done
+m3
