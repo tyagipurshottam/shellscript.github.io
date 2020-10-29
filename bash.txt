@@ -801,3 +801,16 @@ do
      fi
 done
 m3
+
+
+<<m4
+# add number in arguments 
+#!/bin/bash
+b=0
+for i in ${*}
+do
+a=${b}
+b=`echo " ${a} + ${i}" | bc`
+done
+echo "${b}"
+m4
