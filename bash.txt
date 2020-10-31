@@ -807,7 +807,7 @@ m3
 # add number in arguments 
 #!/bin/bash
 b=0
-for i in ${*}
+for i in ${*} or ${@}
 do
 a=${b}
 b=`echo " ${a} + ${i}" | bc`
