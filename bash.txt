@@ -40,6 +40,14 @@
 #x="\033[0;32mPurshottam\033[0m"
 #echo  -e "x=$x"
 
+#if youwant to break agrument
+
+#!/bin/bash
+echo "${1//-1}"
+sh interview.sh pusho-1
+
+#result pusho
+
 #status
 #echo $?  0 means before this command run sueccssfull if not 0 means error in command(falied) 
 #1 is command failed during exection but command is vaild and 127 command not found, 2 is command useage is invalid
